@@ -3,20 +3,46 @@
   <head>
     <meta charset="UTF-8">
     <title>Urbit from the Web</title>
+
+    <script src="/~/at/=home=/web/lib/js/urb.js"></script>
+
   </head>
   <body>
 
+    <br />
+
     <div>
-      <h1>Hello, Mars!</h1>
-      <button onclick="someJavaScript();">A button test!</button>
+      <button onclick="sayHi();"><h1>Say hi to your ship!</h1></button>
+    </div>
+
+    <br />
+
+    <div id="loadHi">
     </div>
 
     <script>
-      console.log('We\'re serving some JavaScript through Urbit to the browser.');
+      function sayHi () {
+        window.urb.send('hi. :)', {
+          appl: 'hood',
+          mark: 'helm-hi'
+        }, function (err, res) {
+          if (err || !res.data) {
+            console.log(path, 'err!');
+            console.log(err);
+            return;
+          }
+          console.log('We just said hi to our ship!');
+          console.log(res.data);
+        });
 
-      function someJavaScript () {
-        console.log('Now we\'re calling some other JavaScript.')
-      }
+        var hi = '';
+        hi += '<div class='hi'>';
+        hi += '<h2><code>< ~' + window.urb.ship + ': hi. :)</code></h2>'
+        hi += '</div>';
+        return document.getElementById('loadHi').innerHTML = hi;
+
+      };
+
     </script>
 
   </body>
