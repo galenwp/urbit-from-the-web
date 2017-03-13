@@ -10,13 +10,8 @@ function uuid32() {
     return serial;
 }
 
-function sendTalkMessage() {
-    var txt = 'test to a second station!'
-
+function sendTalkMessage(txt, audi) {
     var station = 'a-second-station';
-
-    var audi = '';
-    audi = '~' + window.urb.ship + '/' + station
 
     var audience = {};
     audience[audi] = {
