@@ -21,12 +21,18 @@
 
         var send = '';
         send += "<div class='send'>";
-        send += '<h3>Let\'s try sending a Talk message to <code>' + station + '</code>.</h3>';
+        send += '<h3>Let\'s try loading <code>' + station + '</code>!</h3>';
         send += '<br />';
         send += '<button onclick="sendTalkMessage();">Let\'s send a Talk message!</button>';
         send += '</div>';
         document.getElementById('loadSend').innerHTML = send;
     </script>
+
+    <br />
+
+    <div id="messages">
+    </div>
+
 
 </body>
 
