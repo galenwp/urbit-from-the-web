@@ -32,11 +32,21 @@
 
         var send = '';
         send += "<div class='send'>";
-        send += '<h3>Send a Talk message to your ' + station + ', ~' + window.urb.ship + '!</h3>';
+        send += '<h3>Send a Talk post to your ' + station + ', ~' + window.urb.ship + '!</h3>';
         send += '<br />';
-        send += '<button onclick="sendTalkMessage();">Let\'s send a Talk message!</button>';
+        send += '<input type="text" id="audience" value="">'
+        send += '<br />';
+        send += '<input type="text" id="post" value="">'
+        send += '<button onclick="sendPost();">Send!</button>';
         send += '</div>';
         document.getElementById('loadSend').innerHTML = send;
+        document.getElementById('audience').value = '~' + window.urb.ship + '/' + station;
+
+        function sendPost() {
+            var post = document.getElementById('post').value;
+            var audience = document.getElementById('audience').value;
+            return sendTalkMessage(post, audience);
+        }
     </script>
 
 </body>

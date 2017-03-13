@@ -1,3 +1,9 @@
+function sendPost() {
+    var post = document.getElementById('post').value;
+    var audience = document.getElementById('audience').value;
+    return sendTalkMessage(post, audience);
+}
+
 function uuid32() {
     var str = '0v';
     str += Math.ceil(Math.random() * 8) + '.';
@@ -10,25 +16,7 @@ function uuid32() {
     return serial;
 }
 
-function sendTalkMessage() {
-    var txt = 'test from a web tutorial. :)'
-
-    var station = '';
-    switch (window.urb.ship.length) {
-        case 3:
-            station = 'court';
-            break;
-        case 6:
-            station = 'floor';
-            break;
-        default:
-            station = 'porch';
-            break;
-    };
-
-    var audi = '';
-    audi = '~' + window.urb.ship + '/' + station
-
+function sendTalkMessage(txt, audi) {
     var audience = {};
     audience[audi] = {
         envelope: {
