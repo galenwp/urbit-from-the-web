@@ -1,49 +1,44 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="UTF-8">
     <title>Urbit from the Web</title>
 
     <script src="/~/at/=home=/web/lib/js/urb.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
+    <script src="/=home=/web/tutorial/main.js"></script>
 
-  </head>
-  <body>
+</head>
 
-    <br />
+<body>
 
-    <div>
-      <button onclick="sayHi();"><h1>Say hi to your ship!</h1></button>
-    </div>
-
-    <br />
-
-    <div id="loadHi">
+    <div id="loadSend">
     </div>
 
     <script>
-      function sayHi () {
-        window.urb.send('hi. :)', {
-          appl: 'hood',
-          mark: 'helm-hi'
-        }, function (err, res) {
-          if (err || !res.data) {
-            console.log(path, 'err!');
-            console.log(err);
-            return;
-          }
-          console.log('We just said hi to our ship!');
-          console.log(res.data);
-        });
+        var station = '';
+        switch (window.urb.ship.length) {
+            case 3:
+                station = 'court';
+                break;
+            case 6:
+                station = 'floor';
+                break;
+            default:
+                station = 'porch';
+                break;
+        };
 
-        var hi = '';
-        hi += '<div class='hi'>';
-        hi += '<h2><code>< ~' + window.urb.ship + ': hi. :)</code></h2>'
-        hi += '</div>';
-        return document.getElementById('loadHi').innerHTML = hi;
-
-      };
-
+        var send = '';
+        send += "<div class='send'>";
+        send += '<h3>Send a Talk message to your ' + station + ', ~' + window.urb.ship + '!</h3>';
+        send += '<br />';
+        send += '<button onclick="sendTalkMessage();">Let\'s send a Talk message!</button>';
+        send += '</div>';
+        document.getElementById('loadSend').innerHTML = send;
     </script>
 
-  </body>
+</body>
+
 </html>
