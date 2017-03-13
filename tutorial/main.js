@@ -47,6 +47,40 @@ function sendTalkMessage() {
         }
     };
 
+    var chan = {
+        design: {
+            party: '',
+            config: {}
+        }
+    };
+    chan.design.party = station;
+    chan.design.config = {
+        sources: [],
+        caption: 'a second %mailbox station.',
+        cordon: {
+            posture: 'brown',                           // %mailbox
+            list: []
+        }
+    };
+
+    window.urb.send(
+        chan, {
+            appl: 'talk',
+            mark: 'talk-command'
+        },
+        function(err, res) {
+            console.log('urb.send');
+            console.log(chan);
+            if (err || !res.data) {
+                console.log(path, 'err!');
+                console.log(err);
+                return;
+            }
+            console.log('Just in case ' + station + ' didn\'t exist, we created it so we can send our Talk post.');
+            console.log(res.data);
+        }
+    );
+
     var obj = {};
     obj.publish = [message.thought];
 
