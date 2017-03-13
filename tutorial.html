@@ -17,22 +17,11 @@
     </div>
 
     <script>
-        var station = '';
-        switch (window.urb.ship.length) {
-            case 3:
-                station = 'court';
-                break;
-            case 6:
-                station = 'floor';
-                break;
-            default:
-                station = 'porch';
-                break;
-        };
+        var station = 'a-second-station';
 
         var send = '';
         send += "<div class='send'>";
-        send += '<h3>Send a Talk message to your ' + station + ', ~' + window.urb.ship + '!</h3>';
+        send += '<h3>Let\'s try sending a Talk message to <code>' + station + '</code>.</h3>';
         send += '<br />';
         send += '<button onclick="sendTalkMessage();">Let\'s send a Talk message!</button>';
         send += '</div>';

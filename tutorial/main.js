@@ -11,20 +11,9 @@ function uuid32() {
 }
 
 function sendTalkMessage() {
-    var txt = 'test from a web tutorial. :)'
+    var txt = 'test to a second station!'
 
-    var station = '';
-    switch (window.urb.ship.length) {
-        case 3:
-            station = 'court';
-            break;
-        case 6:
-            station = 'floor';
-            break;
-        default:
-            station = 'porch';
-            break;
-    };
+    var station = 'a-second-station';
 
     var audi = '';
     audi = '~' + window.urb.ship + '/' + station
