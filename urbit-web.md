@@ -1,9 +1,9 @@
 ---
 navhome: /docs/
-title: An Urbit social app tutorial
+title: Urbit from the Web
 ---
 
-# An Urbit social app tutorial
+# Urbit from the Web
 
 Probably the most fun thing about Urbit right now for developers, which we're going to try and highlight in this new multi-part tutorial series, is how easy Urbit makes it to build and deploy web apps.
 
