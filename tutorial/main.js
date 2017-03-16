@@ -1,3 +1,6 @@
+var station = 'feed-test-1';
+var stationFull = "~" + window.urb.user + "/" + station
+
 function uuid32() {
     var str = '0v';
     str += Math.ceil(Math.random() * 8) + '.';
@@ -54,8 +57,46 @@ function talkPath() {
     return ['', encodedTypes].concat(slice.call(components)).join('/');
 }
 
-function sendTalkMessage(txt, audi) {
-    var station = 'a-second-station';
+function loadFeed() {
+    var now;
+    var date = window.urb.util.toDate(
+        (now = new Date(),
+            now.setSeconds(0),
+            now.setMilliseconds(0),
+            new Date(now - 24 * 3600 * 1000)));
+
+    var path = talkPath({
+        f_grams: 'f_grams'
+    }, station, date);
+
+    return window.urb.bind(path, {
+        appl: 'talk',
+        mark: 'json'
+    }, function(err, res) {
+        console.log("We're going to try to listen to the station at this path:");
+        console.log(path);
+        console.log('urb.bind');
+        if (err || !res.data) {
+            console.log(path, 'err!');
+            console.log(err);
+            return;
+        }
+        console.log("`urb.bind` at the path was successful. Now we're listening!");
+        console.log(res.data);
+        window.sources = res.data.cabal.loc.sources;
+        var posts = '';
+        res.data.grams.tele.forEach(function(gram) {
+            posts += "<div class='post'>";
+            posts += '<h2>' + '~' + gram.ship + '</h2>';
+            posts += '<h3>' + convTime(gram.thought.statement.date) + '</h3>';
+            posts += gram.thought.statement.speech.lin.txt;
+            posts += '</div>';
+        });
+        document.getElementById('posts').innerHTML = posts;
+    });
+}
+
+function sendFeedPost(txt, audi) {
 
     var audience = {};
     audience[audi] = {
@@ -86,44 +127,46 @@ function sendTalkMessage(txt, audi) {
         }
     };
 
-    var chan = {
-        design: {
-            party: '',
-            config: {}
-        }
-    };
-    chan.design.party = station;
-    chan.design.config = {
-        sources: [],
-        caption: 'a second %mailbox station.',
-        cordon: {
-            posture: 'brown',                           // %mailbox
-            list: []
-        }
-    };
-
-    window.urb.send(
-        chan, {
-            appl: 'talk',
-            mark: 'talk-command'
-        },
-        function(err, res) {
-            console.log('urb.send');
-            console.log(chan);
-            if (err || !res.data) {
-                console.log(path, 'err!');
-                console.log(err);
-                return;
+    if !(_.includes(window.sources, stationFull)) {
+        var chan = {
+            design: {
+                party: '',
+                config: {}
             }
-            console.log('Just in case `' + station + '` didn\'t exist, we created it so we can send our Talk post.');
-            console.log(res.data);
-        }
-    );
+        };
+        chan.design.party = station;
+        chan.design.config = {
+            sources: [],
+            caption: window.urb.user + "'s feed.'",
+            cordon: {
+                posture: 'green', // %journal
+                list: []
+            }
+        };
+
+        window.urb.send(
+            chan, {
+                appl: 'talk',
+                mark: 'talk-command'
+            },
+            function(err, res) {
+                console.log('urb.send');
+                console.log(chan);
+                if (err || !res.data) {
+                    console.log(path, 'err!');
+                    console.log(err);
+                    return;
+                }
+                console.log("Your feed didn't exist, so we created it.");
+                console.log(res.data);
+            }
+        );
+    }
 
     var obj = {};
     obj.publish = [message.thought];
 
-    window.urb.send(
+    return window.urb.send(
         obj, {
             appl: 'talk',
             mark: 'talk-command'
@@ -137,43 +180,82 @@ function sendTalkMessage(txt, audi) {
                 return;
             }
             console.log(res.data);
-            console.log('We just sent our ship a Talk message!');
+            console.log('We just sent a Talk message!');
         }
     );
+}
 
-    var now;
-    var date = window.urb.util.toDate(
-        (now = new Date(),
-            now.setSeconds(0),
-            now.setMilliseconds(0),
-            new Date(now - 24 * 3600 * 1000)));
+function subscribeShipFeed(ship) {
+    var shipFeed = "~" + ship + "/" + station
+    var sources = window.sources.push(shipFeed);
 
-    var path = talkPath({
-        f_grams: 'f_grams'
-    }, station, date);
-
-    return window.urb.bind(path, {
-        appl: 'talk',
-        mark: 'json'
-    }, function(err, res) {
-        console.log('We\'re going to try to listen to the station at this path:');
-        console.log(path);
-        console.log('urb.bind');
-        if (err || !res.data) {
-            console.log(path, 'err!');
-            console.log(err);
-            return;
+    var porch = {
+        design: {
+            party: '',
+            config: {}
         }
-        console.log('`urb.bind` at the path was successful. Now we\'re listening!');
-        console.log(res.data);
-        var messages = '';
-        res.data.grams.tele.forEach(function(gram) {
-            messages += "<div class='message'>";
-            messages += '<h2>' + '~' + gram.ship + '</h2>';
-            messages += '<h3>' + convTime(gram.thought.statement.date) + '</h3>';
-            messages += gram.thought.statement.speech.lin.txt;
-            messages += '</div>';
-        });
-        document.getElementById('messages').innerHTML = messages;
-    });
+    };
+    porch.design.party = 'porch';
+    porch.design.config = {
+        sources: sources,
+        caption: "",
+        cordon: {
+            posture: 'black', // %
+            list: []
+        }
+    };
+
+    window.urb.send(
+        porch, {
+            appl: 'talk',
+            mark: 'talk-command'
+        },
+        function(err, res) {
+            console.log('urb.send');
+            console.log(chan);
+            if (err || !res.data) {
+                console.log(path, 'err!');
+                console.log(err);
+                return;
+            }
+            console.log("You are now subscribed to `" + window.urb.user + "`'s feed!");
+            console.log(res.data);
+        }
+    );
+}
+
+function unsubscribeShipFeed(ship) {
+    var shipFeed = "~" + ship + "/" + station
+    var sources = window.sources;
+
+    var shipFeedPorchIndex = sources.indexOf(shipFeed)
+
+    if (index > -1) {
+        sources.splice(shipFeed, 1);
+    }
+
+    var porch = {
+        design: {
+            party: station,
+            config: null
+        }
+    };
+
+    window.urb.send(
+        porch, {
+            appl: 'talk',
+            mark: 'talk-command'
+        },
+        function(err, res) {
+            console.log('urb.send');
+            console.log(chan);
+            if (err || !res.data) {
+                console.log(path, 'err!');
+                console.log(err);
+                return;
+            }
+            console.log("You are now unsubscribed from `" + window.urb.user + "`'s feed.");
+            console.log(res.data);
+        }
+    );
 }

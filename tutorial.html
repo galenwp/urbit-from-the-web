@@ -13,33 +13,94 @@
 
 <body>
 
-    <div id="loadSend">
+
+    <div id="shipExplore">
+        <input type="text" id="exploreShip" maxlength="57" size="57" value="">
+        <button onclick="getShipProf(document.getElementById('exploreShip').value);">Fetch!</button>';
     </div>
 
     <br />
 
-    <div id="messages">
+    <div id="shipProf">
+    </div>
+
+    <div id="postBox">
+    </div>
+
+    <div id="subscribeButton">
+    </div>
+
+
+    <div id="posts">
     </div>
 
     <script>
-        var station = 'a-second-station';
+        // var station = 'a-second-station';
 
-        var send = '';
-        send += "<div class='send'>";
-        send += '<h3>Let\'s try sending a Talk message to <code>' + station + '</code>.</h3>';
-        send += '<br />';
-        send += '<input type="text" id="audience" value="">'
-        send += '<br />';
-        send += '<input type="text" id="post" value="">'
-        send += '<button onclick="sendPost();">Send!</button>';
-        send += '</div>';
-        document.getElementById('loadSend').innerHTML = send;
-        document.getElementById('audience').value = '~' + window.urb.ship + '/' + station;
+        loadFeed();
 
-        function sendPost() {
+        if (window.ship) {
+            var shipProf = '';
+            shipProf += '<div id=shipProf>';
+            shipProf += '<h2>' + window.ship + '</h2>';
+            shipProf += '</div>'
+            shipProf += '</br>'
+            document.getElementById('shipProf').innerHTML = shipProf;
+        }
+
+        if (window.ship && window.ship == window.urb.ship == window.urb.user == window.urb.auth[0]) {
+            var postBox = '';
+            postBox = '<div id="postBox">';
+            postBox = '<input type="text" id="post" maxlength="160" width="64" heigt="3" value="">';
+            postBox = '<button onclick="submitFeedPost();">Post!</button>';
+            postBox = '</div>';
+            postBox = '<br />';
+            document.getElementById('postBox').innerHTML = postBox;
+        }
+
+        if (window.ship && !(window.ship == window.urb.user) && window.urb.ship == window.urb.user == window.urb.auth[0]) {
+            var subscribeButton = '';
+            subscribeButton = '<div id="subscribeButton">';
+            subscribeButton = '<button onclick="subscribeShipFeed(window.ship);"><h3>Subscribe</h3></button>';
+            subscribeButton = '</div>';
+            subscribeButton = '<br />';
+            document.getElementById('subscribeButton').innerHTML = subscribeButton;
+        }
+
+        if ((window.ship && !(window.ship == window.urb.user) && !(window.urb.ship == window.urb.user == window.urb.auth[0])) {
+                if !(_.includes(window.sources, feed)) {
+                    var unsubscribeButton = '';
+                    unsubscribeButton = '<div id="subscribeButton">';
+                    unsubscribeButton = '<button onclick="unsubscribeShipFeed(window.ship);"><h3>Subscribed</h3></button>';
+                    unsubscribeButton = '</div>';
+                    unsubscribeButton = '<br />';
+                    document.getElementById('subscribeButton').innerHTML = unsubscribeButton;
+                } else {
+                    var subscribeRedirect = '';
+                    subscribeRedirect = '<div id="subscribeRedirect">';
+                    subscribeRedirect = '<form action ="' + window.urb.ship + '.urbit.org/~~/' + window.ship + '/home=/web/feed.html">';
+                    subscribeRedirect = '<input type="submit"><h3>Subscribe</h3></input>';
+                    subscribeRedirect = '</form>';
+                    subscribeRedirect = '</div>';
+                    subscribeRedirect = '<br />';
+                    document.getElementById('subscribeButton').innerHTML = subscribeRedirect;
+                }
+            }
+
+        if !(window.ship) {
+            document.getElementById('shipExplore').value = "Fetch a ship's feed! (like ~tonret-sigsur)"
+        }
+
+        function getShipProf(ship) {
+            var window.ship = ship;
+            window.location = 'https://' + window.urb.ship + '.urbit.org/~~/' + ship + '/home=/web/feed.html">';
+        }
+
+        function submitFeedPost() {
+            var feedStation = 'feed-test-1'
             var post = document.getElementById('post').value;
-            var audience = document.getElementById('audience').value;
-            return sendTalkMessage(post, audience);
+            var audience = '~' + window.urb.user + '/' + feedStation;
+            return sendFeedPost(post, audience);
         }
     </script>
 
