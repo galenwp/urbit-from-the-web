@@ -45,7 +45,7 @@
           ship = ship.substr(1);
         }
         if (ship == window.urb.user) {
-          return console.log("You should already be viewing your public station. :)");
+          return console.log("You should already be viewing your public station.");
         } loadPublicStation(ship);
         sessionStorage.setItem('feedShip', ship);
       }
@@ -93,17 +93,6 @@
           shipUnsubscribeButton = '</div>';
           shipUnsubscribeButton = '<br />';
           document.getElementById('shipSubscribeButton').innerHTML = shipUnsubscribeButton;
-        }
-
-        if ((feedShip && !(feedShip === window.urb.user) && !(window.urb.ship === window.urb.user && window.urb.user === window.urb.auth[0]))) {
-          var subscribeRedirect = '';
-          subscribeRedirect = '<div id="subscribeRedirect">';
-          subscribeRedirect = '<form action ="' + window.urb.ship + '.urbit.org/~~/~' + feedShip + '/home=/web/feed.html">';
-          subscribeRedirect = '<input type="submit"><h3>Subscribe</h3></input>';
-          subscribeRedirect = '</form>';
-          subscribeRedirect = '</div>';
-          subscribeRedirect = '<br />';
-          document.getElementById('shipSubscribeButton').innerHTML = subscribeRedirect;
         }
       }
     </script>
