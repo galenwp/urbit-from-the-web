@@ -1,0 +1,25 @@
+{
+  "name": "urbit-spa-tutorial",
+  "version": "0.1.0",
+  "description": "urbit single-page-app tutorial",
+  "main": "main.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/keatondunsford/urbit-spa-tutorial"
+  },
+  "contributors": [
+    {
+      "name": "Keaton Dunsford",
+      "email": "keaton@tlon.io"
+    }
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^3.16.1",
+    "eslint-config-airbnb": "^14.1.0",
+    "eslint-config-airbnb-base": "^11.1.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^4.0.0",
+    "eslint-plugin-react": "^6.10.0"
+  }
+}

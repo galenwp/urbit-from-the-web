@@ -1,0 +1,7 @@
+# dependencies
+node_modules/
+# OS
+.DS_Store
+# just helps with linting.
+lint.js
+

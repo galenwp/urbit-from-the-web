@@ -1,0 +1,6 @@
+{
+    "extends": "airbnb-base/legacy",
+    "plugins": [
+        "import"
+    ]
+}
