@@ -1,5 +1,3 @@
-<!DOCTYPE html>
-<html>
 
 <head>
     <meta charset="UTF-8">
@@ -9,92 +7,88 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
     <script src="/=home=/web/public/main.js"></script>
 
+    <style>
+        hidden {
+          display: none;
+        }
+    </style>
+
 </head>
 
-<body>
+<body class="hidden">
 
-    <div id="shipExplore">
-        <input type="text" id="exploreShip" maxlength="57" size="57" value="Fetch a ship's public feed! (like ~tonret-sigsur)">
-        <button onclick="getPublicStation(document.getElementById("exploreShip").value)">Fetch!</button>
+    <div class="hidden" id="publicStationShip">
+        <h2 id="publicStationShipH2"></h2>
+        <br />
     </div>
 
-    <br />
-
-    <div id="publicStationShip">
+    <div class="hidden" id="userPostBox">
+        <input type="text" id="post" maxlength="160" width="64" heigt="3" value="">
+        <button onclick='sendPublicPost();'>Post!</button>";
+        <br />
     </div>
 
-    <div id="userPostBox">
+    <!-- <div class="hidden" id="shipSubscribeButton">
+        <button onclick="subscribePublicStation(feedShip, window.sources.push(fullPublicStation(ship)))"><h3>Subscribe</h3></button>
+        <br />
     </div>
 
-    <div id="shipSubscribeButton">
+    <div class="hidden" id="shipUnsubscribeButton">
+        <button onclick="unsubscribeShipFeed(feedShip, window.sources)"><h3>Subscribed</h3></button>
+        <br />
     </div>
-
-
-    <div id="publicStationPosts">
+ -->
+    <div class="hidden" id="publicStationPosts">
     </div>
 
     <script>
-      var feedShip = sessionStorage.getItem('feedShip');
-
-      function fullPublicStation(ship) {
-        return '~' + ship + '/' + 'public';
-      }
-
-      function getPublicStation(ship) {
-        while (ship.charAt(0) === '~') {
-          ship = ship.substr(1);
-        }
-        if (ship == window.urb.user) {
-          return console.log("You should already be viewing your public station.");
-        } loadPublicStation(ship);
-        sessionStorage.setItem('feedShip', ship);
-      }
+      // var feedShip = sessionStorage.getItem('feedShip');
+      //
+      // function getPublicStation(ship) {
+      //   while (ship.charAt(0) === '~') {
+      //     ship = ship.substr(1);
+      //   }
+      //   if (ship == window.urb.user) {
+      //     return console.log("You are viewing your public station.");
+      //   } loadPublicStation(ship);
+      //   sessionStorage.setItem('feedShip', ship);
+      // }
 
       if (!(window.urb.ship === window.urb.user && window.urb.user === window.urb.auth[0])) {
         window.location = 'http://' + window.location.host + '/~~/public.html';
       } else {
         listen(window.urb.user);
         loadSources(window.urb.user);
-        if (window.sources) {
-          checkMainStationSubbedPublic(fullPublicStation(window.urb.user), window.urb.user, window.sources);
-        }
+        // if (window.sources) {
+        //   checkMainStationSubbedPublic(fullPublicStation(window.urb.user), window.urb.user, window.sources);
+        // }
         loadPublicStation(window.urb.user);
+        var publicStationUser = '<h2 id="publicStationShipH2">' + window.urb.user + '</h2>';
+        document.getElementById('publicStationShipH2').innerHTML = publicStationUser;
+        document.getElementById('publicStationShip').className = '';
+        document.body.className = '';
       }
 
-      if (!feedShip && window.urb.ship === window.urb.user && window.urb.user === window.urb.auth[0]) {
-        var publicStationUser = '';
-        publicStationUser += '<div id=publicStationShip>';
-        publicStationUser += '<h2>' + window.urb.user + '</h2>';
-        publicStationUser += '</div>';
-        publicStationUser += '</br>';
-        document.getElementById('publicStationShip').innerHTML = publicStationUser;
-
-        var userPostBox = '';
-        userPostBox += '<div id="userPostBox">';
-        userPostBox += '<input type="text" id="post" maxlength="160" width="64" heigt="3" value="">';
-        userPostBox += "<button onclick='postToPublicStation(document.getElementById(\"post\").value, fullPublicStation(window.urb.user))'>Post!</button>";
-        userPostBox += '</div>';
-        userPostBox += '<br />';
-        document.getElementById('userPostBox').innerHTML = userPostBox;
+      function fullPublicStation(ship) {
+        return '~' + ship + '/' + 'public';
       }
 
-      if (feedShip && !(feedShip === window.urb.user) && window.urb.ship === window.urb.user && window.urb.user === window.urb.auth[0]) {
-        if (!(_.includes(window.sources, fullPublicStation(feedShip)))) {
-          var shipSubscribeButton = '';
-          shipSubscribeButton += '<div id="shipSubscribeButton">';
-          shipSubscribeButton += '<button onclick="subscribePublicStation(feedShip, window.sources.push(fullPublicStation(ship)))"><h3>Subscribe</h3></button>';
-          shipSubscribeButton += '</div>';
-          shipSubscribeButton += '<br />';
-          document.getElementById('shipSubscribeButton').innerHTML = shipSubscribeButton;
-        } else {
-          var shipUnsubscribeButton = '';
-          shipUnsubscribeButton += '<div id="shipSubscribeButton">';
-          shipUnsubscribeButton += '<button onclick="unsubscribeShipFeed(feedShip, window.sources)"><h3>Subscribed</h3></button>';
-          shipUnsubscribeButton += '</div>';
-          shipUnsubscribeButton += '<br />';
-          document.getElementById('shipSubscribeButton').innerHTML = shipUnsubscribeButton;
-        }
+      function sendPublicPost() {
+        var text = document.getElementById("post").value;
+        var audi = fullPublicStation(window.urb.user);
+        return postToPublicStation(txt, audi);
       }
+
+      // if (!feedShip && window.urb.ship === window.urb.user && window.urb.user === window.urb.auth[0]) {
+      // }
+
+      // if (feedShip && !(feedShip === window.urb.user) && window.urb.ship === window.urb.user && window.urb.user === window.urb.auth[0]) {
+      //   if (!(_.includes(window.sources, fullPublicStation(feedShip)))) {
+      //     document.getElementById('shipSubscribeButton').className = '';
+      //   } else {
+      //     document.getElementById('shipUnsubscribeButton').className = '';
+      //   }
+      // }
     </script>
 
 </body>
