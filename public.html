@@ -8,27 +8,66 @@
     <script src="/=home=/web/public/main.js"></script>
 
     <style>
-        hidden {
-          display: none;
-        }
+      #loading {
+        position: absolute;
+        top: 0; left: 0;
+        background-color: #000;
+        color: #fff;
+        padding: 20px;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      body {
+        font-family: sans-serif;
+      }
+
+      .ship {
+        font-family: monospace;
+      }
+
+      input,
+      button {
+        border: 3px solid #000;
+        padding: 10px;
+        font-size: 18px;
+      }
+
+      input {
+        line-height: 20px;
+        font-famiy: sans-serif;
+      }
+
+      button {
+        background-color: #fff;
+        font-weight: 500;
+        display: block;
+        margin-top: 12px;
+      }
     </style>
 
 </head>
 
-<body class="hidden">
+<body>
 
-    <div id="publicStationShip">
-        <h2 id="publicStationShipH2"></h2>
+    <div id="loading">
+      Loading...
+    </div>
+
+    <div>
+        <h2 id="ship" class="ship"></h2>
         <br />
     </div>
 
-    <div id="userPostBox">
-        <input type="text" id="post" size="64" value="">
-        <button onclick='sendPublicPost();'>Post!</button>
+    <div>
+        <input type="text" id="postBox" size="64" value="">
+        <button onclick='sendPost();'>Post!</button>
         <br />
     </div>
 
-    <div id="publicStationPosts">
+    <div id="posts">
     </div>
 
     <script>
@@ -38,19 +77,8 @@
         listen(window.urb.user);
         loadSources(window.urb.user);
         loadPublicStation(window.urb.user);
-        var publicStationUser = '<h2 id="publicStationShipH2">' + window.urb.user + '</h2>';
-        document.getElementById('publicStationShipH2').innerHTML = publicStationUser;
+        document.getElementById('ship').innerHTML = "~"+window.urb.user;
         document.body.classList.remove = 'hidden';
-      }
-
-      function fullPublicStation(ship) {
-        return '~' + ship + '/' + 'public';
-      }
-
-      function sendPublicPost() {
-        var txt = document.getElementById("post").value;
-        var audi = fullPublicStation(window.urb.user);
-        return postToPublicStation(txt, audi);
       }
     </script>
 

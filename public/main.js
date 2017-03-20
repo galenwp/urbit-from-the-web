@@ -164,37 +164,42 @@ function loadPublicStation(ship) {
     f_grams: 'f_grams'
   }, station, date);
 
+  document.getElementById('loading').classList.remove('hidden');
+
   return window.urb.bind(path, {
     ship: ship,
     appl: 'talk',
     mark: 'json'
   }, function (err, res) {
+    var oldPosts, newPosts;
     console.log('Now trying to listen to ' + ship + "'s `" + station + '` station at the path: `' + path + '`.');
     console.log('urb.bind');
     if (err || !res.data) {
       console.log(path, 'err!');
       console.log(err);
+      console.warn('Error: ' + res + err);
       return;
     }
+    document.getElementById('loading').classList.add('hidden');
     console.log('`urb.bind` at ' + path + ' was successful.');
     console.log(res.data);
-    var publicStationPost = '';
+    oldPosts = document.getElementById('posts').innerHTML;
+    newPosts = '';
     res.data.grams.tele.reverse().forEach(function (gram) {
-      publicStationPost += "<div class='publicStationPost'>";
-      publicStationPost += '<h2>~' + gram.ship + '</h2>';
-      publicStationPost += '<h3>' + convTime(gram.thought.statement.date) + '</h3>';
-      publicStationPost += gram.thought.statement.speech.lin.txt;
-      publicStationPost += '</div>';
+      newPosts += "<div class='post'>";
+      newPosts += '<h2 class="ship">~' + gram.ship + '</h2>';
+      newPosts += '<h3>' + convTime(gram.thought.statement.date) + '</h3>';
+      newPosts += gram.thought.statement.speech.lin.txt;
+      newPosts += '</div>';
     });
-    document.getElementById('publicStationPosts').innerHTML = publicStationPost +
-      document.getElementById('publicStationPosts').innerHTML;
+    document.getElementById('posts').innerHTML = newPosts + oldPosts;
     window.grams = res.data.grams;
   });
 }
 
-function postToPublicStation(txt, fullPublicStation) {
+function postToStation(txt, fullStation) {
   var audience = {};
-  audience[fullPublicStation] = {
+  audience[fullStation] = {
     envelope: {
       visible: true,
       sender: null
@@ -242,4 +247,10 @@ function postToPublicStation(txt, fullPublicStation) {
           console.log('We just sent a Talk message!');
         }
     );
+}
+
+function sendPost() {
+  var post = document.getElementById('postBox').value;
+  var station = '~' + window.urb.user + '/public';
+  return postToStation(post, station);
 }
