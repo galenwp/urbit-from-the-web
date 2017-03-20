@@ -178,15 +178,18 @@ function loadPublicStation(ship) {
     }
     console.log('`urb.bind` at ' + path + ' was successful.');
     console.log(res.data);
-    var publicStationPosts = '';
+    var publicStationPost = '';
     res.data.grams.tele.reverse().forEach(function (gram) {
-      publicStationPosts += "<div class='publicStationPost'>";
-      publicStationPosts += '<h2>~' + gram.ship + '</h2>';
-      publicStationPosts += '<h3>' + convTime(gram.thought.statement.date) + '</h3>';
-      publicStationPosts += gram.thought.statement.speech.lin.txt;
-      publicStationPosts += '</div>';
+      publicStationPost += "<div class='publicStationPost'>";
+      publicStationPost += '<h2>~' + gram.ship + '</h2>';
+      publicStationPost += '<h3>' + convTime(gram.thought.statement.date) + '</h3>';
+      publicStationPost += gram.thought.statement.speech.lin.txt;
+      publicStationPost += '</div>';
     });
-    document.getElementById('publicStationPosts').innerHTML = publicStationPosts;
+    document.getElementById('publicStationPosts').innerHTML = publicStationPost +
+      document.getElementById('publicStationPosts').innerHTML;
+    window.grams = res.data.grams;
+    document.body.classList.remove = 'hidden';
   });
 }
 
