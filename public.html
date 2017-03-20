@@ -17,56 +17,30 @@
 
 <body class="hidden">
 
-    <div class="hidden" id="publicStationShip">
+    <div id="publicStationShip">
         <h2 id="publicStationShipH2"></h2>
         <br />
     </div>
 
-    <div class="hidden" id="userPostBox">
+    <div id="userPostBox">
         <input type="text" id="post" maxlength="160" width="64" heigt="3" value="">
         <button onclick='sendPublicPost();'>Post!</button>";
         <br />
     </div>
 
-    <!-- <div class="hidden" id="shipSubscribeButton">
-        <button onclick="subscribePublicStation(feedShip, window.sources.push(fullPublicStation(ship)))"><h3>Subscribe</h3></button>
-        <br />
-    </div>
-
-    <div class="hidden" id="shipUnsubscribeButton">
-        <button onclick="unsubscribeShipFeed(feedShip, window.sources)"><h3>Subscribed</h3></button>
-        <br />
-    </div>
- -->
-    <div class="hidden" id="publicStationPosts">
+    <div id="publicStationPosts">
     </div>
 
     <script>
-      // var feedShip = sessionStorage.getItem('feedShip');
-      //
-      // function getPublicStation(ship) {
-      //   while (ship.charAt(0) === '~') {
-      //     ship = ship.substr(1);
-      //   }
-      //   if (ship == window.urb.user) {
-      //     return console.log("You are viewing your public station.");
-      //   } loadPublicStation(ship);
-      //   sessionStorage.setItem('feedShip', ship);
-      // }
-
       if (!(window.urb.ship === window.urb.user && window.urb.user === window.urb.auth[0])) {
         window.location = 'http://' + window.location.host + '/~~/public.html';
       } else {
         listen(window.urb.user);
         loadSources(window.urb.user);
-        // if (window.sources) {
-        //   checkMainStationSubbedPublic(fullPublicStation(window.urb.user), window.urb.user, window.sources);
-        // }
         loadPublicStation(window.urb.user);
         var publicStationUser = '<h2 id="publicStationShipH2">' + window.urb.user + '</h2>';
         document.getElementById('publicStationShipH2').innerHTML = publicStationUser;
-        document.getElementById('publicStationShip').className = '';
-        document.body.className = '';
+        document.body.classList.remove = 'hidden';
       }
 
       function fullPublicStation(ship) {
@@ -78,17 +52,6 @@
         var audi = fullPublicStation(window.urb.user);
         return postToPublicStation(txt, audi);
       }
-
-      // if (!feedShip && window.urb.ship === window.urb.user && window.urb.user === window.urb.auth[0]) {
-      // }
-
-      // if (feedShip && !(feedShip === window.urb.user) && window.urb.ship === window.urb.user && window.urb.user === window.urb.auth[0]) {
-      //   if (!(_.includes(window.sources, fullPublicStation(feedShip)))) {
-      //     document.getElementById('shipSubscribeButton').className = '';
-      //   } else {
-      //     document.getElementById('shipUnsubscribeButton').className = '';
-      //   }
-      // }
     </script>
 
 </body>

@@ -150,44 +150,6 @@ function loadSources(user) {
   });
 }
 
-function checkMainStationSubbedPublic(publicStation, ship, sources) {
-  if (_.includes(sources, publicStation)) {
-    return console.log('Your `' + mainStation(ship) + "`'s sources are now loaded.");
-  }
-  var sourcesPubNowSubbed = sources.push(publicStation);
-
-  var porch = {
-    design: {
-      party: mainStation(ship),
-      config: {
-        sources: sourcesPubNowSubbed,
-        caption: '',
-        cordon: {
-          posture: 'brown',
-          list: []
-        }
-      }
-    }
-  };
-
-  window.urb.send(
-                porch, {
-                  appl: 'talk',
-                  mark: 'talk-command'
-                },
-                function (err, res) {
-                  console.log('urb.send');
-                  console.log(porch);
-                  if (err || !res.data) {
-                    console.log(err);
-                    return;
-                  }
-                  console.log('Your `' + mainStation(ship) + "` wasn't subscribed to your public station. Now it is!");
-                  console.log(res.data);
-                }
-            );
-}
-
 function loadPublicStation(ship) {
   var station = 'public';
 
@@ -276,78 +238,6 @@ function postToPublicStation(txt, fullPublicStation) {
           }
           console.log(res.data);
           console.log('We just sent a Talk message!');
-        }
-    );
-}
-
-function subscribePublicStation(ship, sources) {
-  var porch = {
-    design: {
-      party: 'porch',
-      config: {
-        sources: sources,
-        caption: '',
-        cordon: {
-          posture: 'brown',
-          list: []
-        }
-      }
-    }
-  };
-
-  window.urb.send(
-        porch, {
-          appl: 'talk',
-          mark: 'talk-command'
-        },
-        function (err, res) {
-          console.log('urb.send');
-          console.log(porch);
-          if (err || !res.data) {
-            console.log(err);
-            return;
-          }
-          console.log('You are now subscribed to `~' + ship + "`'s public station!");
-          console.log(res.data);
-        }
-    );
-}
-
-function unsubscribePublicStation(ship, sources) {
-  var publicStationPorchIndex = sources.indexOf(fullPublicStation(ship));
-
-  if (publicStationPorchIndex > -1) {
-    sources.splice(fullPublicStation(ship), 1);
-  }
-
-  var porch = {
-    design: {
-      party: 'porch',
-      config: {
-        sources: sources,
-        caption: '',
-        cordon: {
-          posture: 'brown',
-          list: []
-        }
-      }
-    }
-  };
-
-  window.urb.send(
-        porch, {
-          appl: 'talk',
-          mark: 'talk-command'
-        },
-        function (err, res) {
-          console.log('urb.send');
-          console.log(porch);
-          if (err || !res.data) {
-            console.log(err);
-            return;
-          }
-          console.log('You are now unsubscribed from `~' + ship + "`'s public station.");
-          console.log(res.data);
         }
     );
 }
