@@ -189,7 +189,6 @@ function loadPublicStation(ship) {
     document.getElementById('publicStationPosts').innerHTML = publicStationPost +
       document.getElementById('publicStationPosts').innerHTML;
     window.grams = res.data.grams;
-    document.body.classList.remove = 'hidden';
   });
 }
 
